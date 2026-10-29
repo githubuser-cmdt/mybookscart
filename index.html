@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MyBooks – Premium PDF Store</title>
+<title>PageVault – Premium PDF Store</title>
 <meta name="description" content="Buy premium PDF study guides, ebooks and templates. Order easily on WhatsApp.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,10 +96,6 @@
   .cv .em{font-size:2.3rem;line-height:1;position:relative}
   .cv .ct{font-weight:800;line-height:1.2;font-size:.98rem;position:relative;text-shadow:0 1px 8px rgba(0,0,0,.2);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
   .cv .pdf{position:absolute;right:10px;bottom:10px;font-size:.62rem;font-weight:800;letter-spacing:.5px;background:rgba(255,255,255,.9);color:var(--text);padding:3px 7px;border-radius:5px}
-  .cv.has-img{padding:0;background:var(--soft)}
-  .cv.has-img::before,.cv.has-img::after{display:none}
-  .cv.has-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .ci .th img{width:100%;height:100%;object-fit:cover;border-radius:7px}
   .off{position:absolute;top:10px;right:10px;z-index:2;background:var(--danger);color:#fff;font-size:.7rem;font-weight:800;padding:4px 9px;border-radius:999px}
   .pbody{padding:12px 14px 14px;display:flex;flex-direction:column;gap:3px;flex:1}
   .pmeta{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:.76rem;color:var(--muted)}
@@ -187,7 +183,7 @@
 <header>
   <div class="container">
     <div class="top">
-      <a href="#" class="logo"><i>MB</i>MyBooks</a>
+      <a href="#" class="logo"><i>PV</i>PageVault</a>
       <div class="search">
         <input type="search" id="search" placeholder="Search PDFs, subjects or categories" aria-label="Search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -256,7 +252,7 @@
 
 <footer>
   <div class="container foot">
-    <span>© <span id="year"></span> MyBooks. All rights reserved.</span>
+    <span>© <span id="year"></span> PageVault. All rights reserved.</span>
     <a href="#" id="contactLink">Contact us on WhatsApp</a>
   </div>
 </footer>
@@ -276,9 +272,9 @@
    CONFIG – edit this section
    ========================================================= */
 const CONFIG = {
-  STORE_NAME: "MyBooks",
+  STORE_NAME: "PageVault",
   CURRENCY: "₹",
-  SELLER_WHATSAPP: "918280950518",  // YOUR WhatsApp number: country code + number, no "+" or spaces
+  SELLER_WHATSAPP: "919999999999",  // YOUR WhatsApp number: country code + number, no "+" or spaces
   RAZORPAY_KEY: "",                 // optional: Razorpay Key ID to also show a "Pay online" button
   FIREBASE_PROJECT_ID: "mybookscart-93a68",          // same Firebase projectId as admin.html
   FIREBASE_API_KEY: "AIzaSyBz7MWEEqWFiuSH8vCerZPrzlgmJfmDPb0"              // same Firebase apiKey as admin.html
@@ -307,7 +303,6 @@ function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("sh
 const ICON_BAG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h14l-1.3 9.1a2 2 0 0 1-2 1.7H8.3a2 2 0 0 1-2-1.7L5 9Z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>`;
 const ICON_CHECK = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>`;
 function coverHTML(p){
-  if(p.image && /^data:image\/|^https:\/\//.test(p.image)) return `<div class="cv has-img"><img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy"><span class="pdf">PDF</span></div>`;
   return `<div class="cv" style="background:${coverBg(p.color)}"><span class="em">${esc(p.emoji)}</span><span class="ct">${esc(p.title)}</span><span class="pdf">PDF</span></div>`;
 }
 
@@ -333,7 +328,7 @@ async function loadRemote(){
       const d=x.document, f=d.fields||{}, g=k=>fv(f[k]);
       return {id:d.name.split("/").pop(), title:g("title")||"Untitled", cat:g("cat")||"General", price:g("price")||0,
         old:g("oldPrice")||0, pages:g("pages")||0, rating:0, sales:0, emoji:g("emoji")||"📄", color:g("color")||"#4c6ef5",
-        date:String(g("createdAt")||""), desc:g("descr")||"", image:g("image")||"", file:""};
+        date:String(g("createdAt")||""), desc:g("descr")||"", file:""};
     }).sort((a,b)=>Number(b.date)-Number(a.date));
   }catch(e){ toast("Could not load products. Please refresh."); }
 }
@@ -386,7 +381,7 @@ function renderCart(){
   const body=$("#cartBody"), foot=$("#cartFoot");
   if(!state.cart.length){ body.innerHTML=`<div class="empty">Your cart is empty</div>`; foot.innerHTML=""; foot.hidden=true; return; }
   foot.hidden=false;
-  body.innerHTML=cartItems().map(p=>`<div class="ci"><div class="th" style="background:${coverBg(p.color)}">${p.image&&/^data:image\/|^https:\/\//.test(p.image)?`<img src="${esc(p.image)}" alt="">`:esc(p.emoji)}</div>
+  body.innerHTML=cartItems().map(p=>`<div class="ci"><div class="th" style="background:${coverBg(p.color)}">${esc(p.emoji)}</div>
       <div class="info"><b>${esc(p.title)}</b><small>${fmt(p.price)}</small></div>
       <button class="rm" data-rm="${p.id}">Remove</button></div>`).join("");
   foot.innerHTML=`<div class="total-row"><span>Total</span><b>${fmt(cartTotal())}</b></div>
@@ -421,7 +416,7 @@ function showDetails(id){
 /* =========================================================
    CHECKOUT  (details form → WhatsApp)
    ========================================================= */
-function orderId(){ return "MB"+Date.now().toString(36).toUpperCase().slice(-6); }
+function orderId(){ return "PV"+Date.now().toString(36).toUpperCase().slice(-6); }
 
 function showCheckout(){
   const saved=lsGet("pv_cust",{});
