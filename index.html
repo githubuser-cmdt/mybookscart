@@ -3,363 +3,554 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>MyBooks Admin</title>
+<title>MyBooks – Premium PDF Store</title>
+<meta name="description" content="Buy premium PDF study guides, ebooks and templates. Order easily on WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#0f1220;--bg2:#171b2e;--card:#1c2138;--text:#eef0f8;--muted:#9aa1bd;--brand:#6c5ce7;--ok:#2ecc71;--wa:#25D366;--danger:#ff6b6b}
+  :root{
+    --bg:#ffffff; --soft:#f5f7fb; --line:#e6e9f2; --text:#0f1b3d; --muted:#667091;
+    --brand:#3b5bdb; --brand-dark:#2f49b5; --brand-soft:#eef1ff;
+    --wa:#25D366; --wa-dark:#1da851; --danger:#e03e3e; --star:#f5a524; --ok:#1f9d55;
+    --radius:14px; --shadow:0 6px 24px rgba(15,27,61,.08);
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   [hidden]{display:none!important}
-  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
-  button{font:inherit;cursor:pointer;border:0}
-  .wrap{width:min(860px,100% - 28px);margin-inline:auto;padding:20px 0 60px}
-  .top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-  .top h1{font-size:1.3rem}.top h1 span{color:#b9b0ff}
-  .btn{padding:11px 18px;border-radius:10px;font-weight:600;font-size:.92rem}
-  .primary{background:var(--brand);color:#fff}
-  .ghost{background:transparent;color:var(--text);border:1px solid #ffffff2a}
-  .block{width:100%}
-  .box{background:var(--bg2);border:1px solid #ffffff12;border-radius:16px;padding:24px}
-  .center{max-width:400px;margin:12vh auto 0}
-  .center h1{margin-bottom:4px}.sub{color:var(--muted);font-size:.9rem;margin-bottom:12px}
-  label{display:block;font-size:.84rem;color:var(--muted);margin:12px 0 6px}
-  .f{width:100%;background:var(--bg);color:var(--text);border:1px solid #ffffff22;border-radius:10px;padding:12px;font:inherit;outline:none}
-  .f:focus{border-color:var(--brand)}
-  textarea.f{min-height:76px;resize:vertical}
-  input[type=color].f{padding:4px;height:46px}
+  html{scroll-behavior:smooth}
+  body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+  svg{display:block}
+  .container{width:min(1180px,100% - 40px);margin-inline:auto}
+
+  /* ---------- header ---------- */
+  header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line)}
+  .top{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:20px;padding:14px 0 10px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.35rem;letter-spacing:-.5px}
+  .logo i{width:38px;height:38px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;font-style:normal;font-size:.95rem;letter-spacing:0}
+  .search{position:relative;max-width:560px;width:100%;justify-self:center}
+  .search input{width:100%;border:1px solid var(--line);background:#fff;border-radius:999px;padding:12px 46px 12px 18px;font:inherit;font-size:.93rem;color:var(--text);outline:none;transition:.15s}
+  .search input:focus{border-color:var(--brand);box-shadow:0 0 0 4px var(--brand-soft)}
+  .search svg{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--muted)}
+  .actions-top{display:flex;align-items:center;gap:8px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:10px;font-weight:700;font-size:.92rem;transition:.15s}
+  .btn-primary{background:var(--brand);color:#fff}.btn-primary:hover{background:var(--brand-dark)}
+  .btn-wa{background:var(--wa);color:#06331a}.btn-wa:hover{background:var(--wa-dark);color:#fff}
+  .btn-ghost{background:#fff;color:var(--text);border:1px solid var(--line)}.btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
+  .btn-white{background:#fff;color:var(--brand)}.btn-white:hover{background:var(--brand-soft)}
+  .btn-block{width:100%}
+  .icon-btn{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:var(--text);transition:.15s}
+  .icon-btn:hover{background:var(--soft)}
+  .cart-count{position:absolute;top:1px;right:0;background:var(--brand);color:#fff;font-size:.68rem;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
+  .cats{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:2px 0 10px}
+  .cats::-webkit-scrollbar{display:none}
+  .cat{flex:none;padding:7px 14px;border-radius:999px;font-size:.88rem;font-weight:600;color:var(--muted);transition:.15s;white-space:nowrap}
+  .cat:hover{color:var(--text);background:var(--soft)}
+  .cat.active{color:var(--brand);background:var(--brand-soft)}
+  @media(max-width:820px){
+    .top{grid-template-columns:1fr auto;gap:12px 10px}
+    .search{grid-column:1/-1;order:3;max-width:none}
+    .wa-top{display:none}
+  }
+
+  /* ---------- hero banner ---------- */
+  .hero{margin-top:26px;border-radius:22px;background:linear-gradient(120deg,#3b5bdb 0%,#4c6ef5 55%,#5c7cfa 100%);color:#fff;display:grid;grid-template-columns:1.05fr 1fr;overflow:hidden;min-height:290px;position:relative}
+  .hero-text{padding:48px 48px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:14px;position:relative;z-index:1}
+  .hero h1{font-size:clamp(1.8rem,3.6vw,2.7rem);line-height:1.12;letter-spacing:-1px;font-weight:800}
+  .hero p{opacity:.92;max-width:430px;font-size:1rem}
+  .hero-cards{display:flex;gap:14px;align-items:center;justify-content:center;padding:26px 26px 26px 0;transform:rotate(-3deg) scale(1.02)}
+  .hc{width:150px;background:#fff;border-radius:14px;padding:8px;box-shadow:0 14px 34px rgba(10,20,80,.28);color:var(--text)}
+  .hc:nth-child(2){transform:translateY(-16px)}
+  .hc:nth-child(3){transform:translateY(10px)}
+  .hc .cv{aspect-ratio:3/4;border-radius:9px;padding:12px 10px}
+  .hc .cv .pdf{display:none}
+  .hc .cv .ct{font-size:.82rem}
+  .hc > b{display:block;font-size:.76rem;margin:8px 2px 0;line-height:1.3;height:2.6em;overflow:hidden}
+  .hc > span{display:block;font-size:.84rem;font-weight:800;color:var(--brand);margin:4px 2px 2px}
+  @media(max-width:820px){
+    .hero{grid-template-columns:1fr;min-height:0;border-radius:18px}
+    .hero-text{padding:32px 24px}
+    .hero-cards{display:none}
+  }
+
+  /* ---------- info strip ---------- */
+  .strip{margin-top:20px;background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .strip .l{display:flex;align-items:center;gap:14px}
+  .strip .ic{width:50px;height:50px;border-radius:14px;background:#e8f9ef;display:grid;place-items:center;color:var(--wa-dark);flex:none}
+  .strip h3{font-size:1.02rem}.strip p{color:var(--muted);font-size:.9rem}
+
+  /* ---------- shop ---------- */
+  section{padding:38px 0 8px}
+  .sec-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+  .sec-head h2{font-size:1.55rem;letter-spacing:-.5px;font-weight:800}
+  .sort{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:10px;padding:10px 14px;font:inherit;font-size:.88rem;outline:none;cursor:pointer}
+  .sort:focus{border-color:var(--brand)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:22px 18px}
+  .product{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:.18s}
+  .product:hover{box-shadow:var(--shadow);transform:translateY(-3px);border-color:#d5dbef}
+  .pcover{position:relative;cursor:pointer}
+  .cv{position:relative;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:space-between;padding:16px 14px;color:#fff;overflow:hidden}
+  .cv::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 100% 0%,rgba(255,255,255,.22),transparent 55%);pointer-events:none}
+  .cv::after{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:rgba(0,0,0,.14)}
+  .cv .em{font-size:2.3rem;line-height:1;position:relative}
+  .cv .ct{font-weight:800;line-height:1.2;font-size:.98rem;position:relative;text-shadow:0 1px 8px rgba(0,0,0,.2);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .cv .pdf{position:absolute;right:10px;bottom:10px;font-size:.62rem;font-weight:800;letter-spacing:.5px;background:rgba(255,255,255,.9);color:var(--text);padding:3px 7px;border-radius:5px}
+  .cv.has-img{padding:0;background:var(--soft)}
+  .cv.has-img::before,.cv.has-img::after{display:none}
+  .cv.has-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .ci .th img{width:100%;height:100%;object-fit:cover;border-radius:7px}
+  .off{position:absolute;top:10px;right:10px;z-index:2;background:var(--danger);color:#fff;font-size:.7rem;font-weight:800;padding:4px 9px;border-radius:999px}
+  .pbody{padding:12px 14px 14px;display:flex;flex-direction:column;gap:3px;flex:1}
+  .pmeta{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:.76rem;color:var(--muted)}
+  .rate{color:var(--text);font-weight:700;display:inline-flex;gap:3px;align-items:center}.rate b{color:var(--star)}
+  .pbody h3{font-size:.95rem;font-weight:700;line-height:1.3;min-height:2.6em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+  .pbody h3:hover{color:var(--brand)}
+  .prow{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+  .price{font-size:1.1rem;font-weight:800}
+  .old{color:var(--muted);text-decoration:line-through;font-size:.82rem;margin-left:6px;font-weight:500}
+  .add{width:38px;height:38px;border-radius:10px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;transition:.15s}
+  .add:hover{background:var(--brand);color:#fff}
+  .add.in{background:var(--brand);color:#fff}
+  .empty{text-align:center;color:var(--muted);padding:56px 0}
+  @media(max-width:560px){
+    .container{width:min(1180px,100% - 28px)}
+    .grid{grid-template-columns:repeat(2,1fr);gap:14px 12px}
+    .cv{padding:12px 10px}.cv .em{font-size:1.8rem}.cv .ct{font-size:.8rem}.cv .pdf{display:none}
+    .pbody{padding:10px 10px 12px}.pbody h3{font-size:.85rem}
+    .price{font-size:.98rem}.old{display:none}
+    .add{width:34px;height:34px}
+    .sec-head h2{font-size:1.3rem}
+  }
+
+  /* ---------- features / faq ---------- */
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+  .feature{padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+  .feature .ic{width:44px;height:44px;border-radius:12px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;margin-bottom:12px}
+  .feature h3{font-size:1rem;margin-bottom:4px}.feature p{color:var(--muted);font-size:.9rem}
+  details{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:10px;background:#fff}
+  details[open]{background:var(--soft)}
+  summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.3rem;line-height:1;color:var(--brand)}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--muted);margin-top:10px;font-size:.92rem}
+
+  footer{margin-top:46px;border-top:1px solid var(--line);background:var(--soft);padding:30px 0;color:var(--muted);font-size:.88rem}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  footer a{color:var(--text);font-weight:600}footer a:hover{color:var(--brand)}
+
+  /* ---------- cart drawer & modal ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(15,27,61,.45);z-index:90;display:none}
+  .overlay.show{display:block}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:#fff;z-index:100;transform:translateX(100%);transition:.28s;display:flex;flex-direction:column;visibility:hidden}
+  .drawer.show{transform:none;visibility:visible;box-shadow:-10px 0 40px rgba(15,27,61,.15)}
+  .drawer-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line)}
+  .x{font-size:1.2rem;color:var(--muted);width:34px;height:34px;border-radius:50%}.x:hover{background:var(--soft);color:var(--text)}
+  .drawer-body{flex:1;overflow:auto;padding:8px 22px}
+  .drawer-foot{padding:18px 22px;border-top:1px solid var(--line);background:var(--soft)}
+  .ci{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+  .ci .th{width:46px;height:60px;border-radius:7px;display:grid;place-items:center;font-size:1.4rem;flex:none;color:#fff}
+  .ci .info{flex:1;min-width:0}.ci .info b{display:block;font-size:.9rem;line-height:1.3}
+  .ci .info small{color:var(--muted);font-weight:600}
+  .rm{color:var(--danger);font-size:.82rem;font-weight:600}
+  .total-row{display:flex;justify-content:space-between;font-size:1.1rem;margin-bottom:14px}
+
+  .modal{position:fixed;inset:0;z-index:110;display:none;place-items:center;padding:16px;background:rgba(15,27,61,.5)}
+  .modal.show{display:grid}
+  .modal-box{background:#fff;border-radius:20px;width:min(540px,100%);max-height:92vh;overflow:auto;padding:26px;box-shadow:0 30px 80px rgba(15,27,61,.3)}
+  .mh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .modal-box h2{margin-bottom:6px;font-size:1.25rem}
+  .modal-box .sub{color:var(--muted);font-size:.9rem;margin-bottom:16px}
+  .detail{display:grid;grid-template-columns:150px 1fr;gap:18px;margin:14px 0}
+  .detail .cv{border-radius:10px}
+  @media(max-width:480px){.detail{grid-template-columns:1fr}.detail .cv{max-width:170px}}
+  label{display:block;font-size:.82rem;font-weight:600;color:var(--muted);margin:12px 0 6px}
+  .f{width:100%;background:#fff;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:.92rem;outline:none}
+  .f:focus{border-color:var(--brand);box-shadow:0 0 0 4px var(--brand-soft)}
+  textarea.f{resize:vertical;min-height:70px}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .stats{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-  .stat{background:var(--bg2);border:1px solid #ffffff12;border-radius:12px;padding:10px 16px;font-size:.85rem;color:var(--muted)}
-  .stat b{display:block;color:var(--text);font-size:1.2rem}
-  .item{background:var(--card);border:1px solid #ffffff10;border-radius:14px;padding:14px;margin-bottom:12px}
-  .item-head{display:flex;gap:12px;align-items:center}
-  .th{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;font-size:1.6rem;flex:none}
-  .item-head .info{min-width:0;flex:1}
-  .item-head b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .item-head small{color:var(--muted)}
-  .tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
-  .tag{font-size:.72rem;padding:3px 10px;border-radius:999px;background:#ffffff12;color:var(--muted)}
-  .tag.ok{background:#2ecc7122;color:var(--ok)}.tag.bad{background:#ff6b6b22;color:var(--danger)}
-  .acts{display:flex;gap:8px;flex-wrap:wrap}
-  .acts button{padding:8px 12px;border-radius:9px;font-size:.82rem;font-weight:600;background:#ffffff10;color:var(--text)}
-  .acts .wa{background:var(--wa);color:#06240f}
-  .acts .del{color:var(--danger)}
-  .empty{text-align:center;color:var(--muted);padding:40px 0}
-  .modal{position:fixed;inset:0;background:#000b;display:grid;place-items:center;padding:14px;z-index:20}
-  .modal .box{width:min(520px,100%);max-height:92vh;overflow:auto}
-  .modal h2{margin-bottom:4px}
-  .chk{display:flex;gap:8px;align-items:center;margin-top:14px;font-size:.9rem}
-  .note{font-size:.78rem;color:var(--muted);margin-top:8px}
-  .or{text-align:center;color:var(--muted);font-size:.8rem;margin-top:10px}
-  .imgprev{display:flex;gap:14px;align-items:center;margin-top:10px;background:var(--bg);border:1px solid #ffffff18;border-radius:12px;padding:10px}
-  .imgprev img{width:84px;aspect-ratio:3/4;object-fit:cover;border-radius:8px;background:#ffffff10}
-  .imgprev small{color:var(--muted);display:block}
-  .th img{width:100%;height:100%;object-fit:cover;border-radius:12px}
-  .toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,80px);background:#222842;border:1px solid #ffffff22;padding:12px 20px;border-radius:12px;z-index:50;transition:.3s;opacity:0;max-width:90vw;text-align:center}
+  .sum{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:14px;margin:14px 0;font-size:.9rem}
+  .sum div{display:flex;justify-content:space-between;gap:12px;padding:3px 0}
+  .sum .hd{color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.6px;font-weight:700;display:block;padding-bottom:6px}
+  .dl{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--soft);padding:12px 14px;border-radius:10px;margin-top:8px;font-size:.9rem}
+  .dl a{background:var(--ok);color:#fff;padding:7px 14px;border-radius:8px;font-weight:700;font-size:.84rem}
+  .ok-ic{font-size:3rem;text-align:center}
+  .note{font-size:.78rem;color:var(--muted);margin-top:10px;text-align:center}
+  .btn-stack{display:grid;gap:10px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,80px);background:var(--text);color:#fff;padding:12px 20px;border-radius:12px;z-index:200;transition:.3s;opacity:0;max-width:90vw;text-align:center;font-size:.9rem;box-shadow:var(--shadow)}
   .toast.show{transform:translate(-50%,0);opacity:1}
-  code{background:#ffffff14;padding:2px 6px;border-radius:6px;font-size:.85em}
 </style>
 </head>
 <body>
 
-<div id="setup" class="wrap" hidden>
-  <div class="box center"><h1>Setup needed</h1>
-    <p class="sub">Open <code>admin.html</code> and paste your Firebase config into <code>FIREBASE_CONFIG</code> at the top of the script. Then reload.</p></div>
-</div>
-
-<div id="login" class="wrap" hidden>
-  <form class="box center" id="loginForm">
-    <h1>Admin login</h1><p class="sub">MyBooks store management</p>
-    <label>Email</label><input class="f" id="lEmail" type="email" autocomplete="username" required>
-    <label>Password</label><input class="f" id="lPass" type="password" autocomplete="current-password" required>
-    <button class="btn primary block" style="margin-top:18px" id="lBtn" type="submit">Login</button>
-    <p id="lErr" class="note" style="color:#ff6b6b;font-size:.85rem" hidden></p>
-  </form>
-</div>
-
-<div id="app" class="wrap" hidden>
-  <div class="top">
-    <h1>My<span>Books</span> Admin</h1>
-    <div style="display:flex;gap:8px">
-      <button class="btn primary" id="addBtn">+ Add PDF</button>
-      <button class="btn ghost" id="logoutBtn">Logout</button>
+<header>
+  <div class="container">
+    <div class="top">
+      <a href="#" class="logo"><i>MB</i>MyBooks</a>
+      <div class="search">
+        <input type="search" id="search" placeholder="Search PDFs, subjects or categories" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </div>
+      <div class="actions-top">
+        <a class="btn btn-wa wa-top" id="waTop" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
+        <button class="icon-btn" id="openCart" aria-label="Open cart">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h14l-1.3 9.1a2 2 0 0 1-2 1.7H8.3a2 2 0 0 1-2-1.7L5 9Z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
     </div>
+    <nav class="cats" id="chips" aria-label="Categories"></nav>
   </div>
-  <div class="stats" id="stats"></div>
-  <div id="list"></div>
-</div>
+</header>
 
-<div class="modal" id="modal" hidden>
-  <form class="box" id="pForm">
-    <h2 id="mTitle">Add PDF</h2><p class="sub">Shown on your store right after saving.</p>
-    <label>Title *</label><input class="f" id="pTitle" required>
-    <div class="row2">
-      <div><label>Category</label><input class="f" id="pCat" list="cats" placeholder="e.g. Exam Prep"><datalist id="cats"></datalist></div>
-      <div><label>Pages</label><input class="f" id="pPages" type="number" min="0"></div>
+<main class="container">
+  <section class="hero" style="padding:0">
+    <div class="hero-text">
+      <h1>Premium PDFs for faster learning.</h1>
+      <p>Study guides, ebooks and templates. Pick your PDFs, send your order on WhatsApp and get them delivered fast.</p>
+      <a href="#shop" class="btn btn-white">Browse all PDFs</a>
     </div>
-    <div class="row2">
-      <div><label>Price (₹) *</label><input class="f" id="pPrice" type="number" min="0" step="1" required></div>
-      <div><label>Old price (₹)</label><input class="f" id="pOld" type="number" min="0" step="1"></div>
-    </div>
-    <div class="row2">
-      <div><label>Emoji icon</label><input class="f" id="pEmoji" maxlength="4" value="📄"></div>
-      <div><label>Cover colour</label><input class="f" id="pColor" type="color" value="#6c5ce7"></div>
-    </div>
-    <label>Description</label><textarea class="f" id="pDesc"></textarea>
+    <div class="hero-cards" id="heroCards"></div>
+  </section>
 
-    <label>Poster / cover image (max 1 MB)</label>
-    <input class="f" id="pImage" type="file" accept="image/jpeg,image/png,image/webp">
-    <div class="imgprev" id="imgPrev" hidden>
-      <img id="imgPrevImg" alt="Poster preview">
-      <div><small id="imgInfo"></small><button class="btn ghost" type="button" id="imgRemove" style="padding:7px 12px;font-size:.8rem;margin-top:8px">Remove image</button></div>
+  <div class="strip">
+    <div class="l">
+      <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 0 0 3.4 17.3L2 22l4.8-1.3A11 11 0 0 0 12 22a11 11 0 0 0 8.5-18.5Zm-8.5 16.7a9 9 0 0 1-4.6-1.3l-.3-.2-2.8.8.8-2.7-.2-.3a9 9 0 1 1 7.1 3.7Zm5-6.7c-.3-.1-1.6-.8-1.9-.9-.3-.1-.4-.1-.6.1l-.9 1.1c-.2.2-.3.2-.6.1a7.3 7.3 0 0 1-3.6-3.1c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.1c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7.5-.1 1.6-.7 1.8-1.3s.2-1.2.2-1.3-.2-.2-.5-.3Z"/></svg></div>
+      <div><h3>Order in one tap on WhatsApp</h3><p>Your name, address and order details are filled in automatically.</p></div>
     </div>
-    <p class="note">JPG, PNG or WebP up to 1 MB. Best size: portrait (3:4), like a book cover. If you skip this, a coloured cover with the emoji is used.</p>
+    <a class="btn btn-primary" href="#shop">Start shopping</a>
+  </div>
 
-    <label>PDF link (Google Drive, Dropbox, etc.)</label>
-    <input class="f" id="pLink" type="url" placeholder="https://drive.google.com/file/d/…/view">
-    <p class="note">In Google Drive: upload the PDF → Share → “Anyone with the link”. This link is private to you – customers never see it on the store.</p>
-    <div id="uploadBox" hidden>
-      <p class="or">— or upload a file —</p>
-      <input class="f" id="pFile" type="file" accept="application/pdf,.pdf" style="margin-top:8px">
+  <section id="shop">
+    <div class="sec-head">
+      <h2 id="shopTitle">All PDFs</h2>
+      <select class="sort" id="sort" aria-label="Sort">
+        <option value="pop">Most popular</option>
+        <option value="new">Newest</option>
+        <option value="low">Price: low to high</option>
+        <option value="high">Price: high to low</option>
+      </select>
     </div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>No PDFs found. Try a different search.</div>
+  </section>
 
-    <label class="chk"><input type="checkbox" id="pActive" checked> Show on store</label>
-    <div class="row2" style="margin-top:18px">
-      <button class="btn ghost" type="button" id="cancelBtn">Cancel</button>
-      <button class="btn primary" type="submit" id="saveBtn">Save</button>
+  <section id="why">
+    <div class="features">
+      <div class="feature"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></div><h3>Fast delivery</h3><p>Get your PDF link on WhatsApp soon after payment.</p></div>
+      <div class="feature"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3>Safe payments</h3><p>Pay by UPI, card or bank transfer.</p></div>
+      <div class="feature"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div><h3>Read anywhere</h3><p>Optimised for phone, tablet and laptop.</p></div>
+      <div class="feature"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div><h3>Free updates</h3><p>Revised editions of your PDFs at no extra cost.</p></div>
     </div>
-  </form>
-</div>
+  </section>
+
+  <section id="faq">
+    <div class="sec-head"><h2>Frequently asked questions</h2></div>
+    <details><summary>How do I order?</summary><p>Add PDFs to your cart, tap Checkout, fill in your details and press "Order on WhatsApp". Your full order message is created automatically.</p></details>
+    <details><summary>How do I get my PDF?</summary><p>After your payment is confirmed on WhatsApp, we send the PDF link or file to you.</p></details>
+    <details><summary>Which payment methods do you accept?</summary><p>UPI, bank transfer and online payment. We share payment details on WhatsApp.</p></details>
+    <details><summary>Can I get a refund?</summary><p>Because PDFs are digital products, refunds are only given if the file is corrupted or you were charged twice.</p></details>
+  </section>
+</main>
+
+<footer>
+  <div class="container foot">
+    <span>© <span id="year"></span> MyBooks. All rights reserved.</span>
+    <a href="#" id="contactLink">Contact us on WhatsApp</a>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Shopping cart">
+  <div class="drawer-head"><h3>Your cart</h3><button class="x" id="closeCart" aria-label="Close">✕</button></div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot" hidden></div>
+</aside>
+
+<div class="modal" id="modal"><div class="modal-box" id="modalBox"></div></div>
 <div class="toast" id="toast"></div>
 
-<script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import {getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import {getFirestore, collection, getDocs, addDoc, setDoc, updateDoc, deleteDoc, doc, query, orderBy} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import {getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+<script>
+/* =========================================================
+   CONFIG – edit this section
+   ========================================================= */
+const CONFIG = {
+  STORE_NAME: "MyBooks",
+  CURRENCY: "₹",
+  SELLER_WHATSAPP: "918280950518",  // YOUR WhatsApp number: country code + number, no "+" or spaces
+  RAZORPAY_KEY: "",                 // optional: Razorpay Key ID to also show a "Pay online" button
+  FIREBASE_PROJECT_ID: "mybookscart-93a68",          // same Firebase projectId as admin.html
+  FIREBASE_API_KEY: "AIzaSyBz7MWEEqWFiuSH8vCerZPrzlgmJfmDPb0"              // same Firebase apiKey as admin.html
+};
+
+/* Default products (shown only until Firebase is connected) */
+const DEFAULT_PRODUCTS = [
+  {id:1, title:"Complete General Knowledge Handbook 2027", cat:"Exam Prep", price:199, old:399, pages:320, rating:4.8, sales:1240, emoji:"📘", color:"#4c6ef5", date:"2026-10-01", desc:"Static GK, current affairs and quick-revision tables in one handbook.", file:""},
+  {id:2, title:"Quantitative Aptitude Formula Book", cat:"Exam Prep", price:149, old:299, pages:180, rating:4.7, sales:980, emoji:"🧮", color:"#12a37f", date:"2026-09-15", desc:"Every formula, shortcut and trick with solved examples.", file:""},
+  {id:3, title:"English Grammar & Vocabulary Master Notes", cat:"Exam Prep", price:129, old:249, pages:210, rating:4.6, sales:870, emoji:"📖", color:"#e8590c", date:"2026-08-20", desc:"Rules, error-spotting practice and 2000+ high-frequency words.", file:""},
+  {id:4, title:"Python Programming for Beginners", cat:"Programming", price:249, old:499, pages:260, rating:4.9, sales:1520, emoji:"🐍", color:"#1c7ed6", date:"2026-10-10", desc:"From zero to projects: syntax, OOP, files and 25 practice tasks.", file:""},
+  {id:5, title:"HTML, CSS & JavaScript Cheat Sheets", cat:"Programming", price:99, old:199, pages:60, rating:4.5, sales:760, emoji:"💻", color:"#d6336c", date:"2026-07-05", desc:"Printable one-page cheat sheets for fast front-end development.", file:""},
+  {id:6, title:"Startup Business Plan Template Pack", cat:"Business", price:299, old:599, pages:45, rating:4.7, sales:430, emoji:"📈", color:"#b8860b", date:"2026-09-28", desc:"Editable business plan, pitch outline and financial projection guide.", file:""}
+];
 
 /* =========================================================
-   CONFIG – paste your Firebase web app config
-   (Firebase console → Project settings → Your apps → Web app → Config)
+   HELPERS
    ========================================================= */
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyBz7MWEEqWFiuSH8vCerZPrzlgmJfmDPb0",
-  authDomain: "mybookscart-93a68.firebaseapp.com",
-  projectId: "mybookscart-93a68",
-  storageBucket: "mybookscart-93a68.firebasestorage.app",
-  appId: "1:812127995663:web:169687a8d97cc1db9a207a"
-};
-const CFG = {
-  STORE_NAME: "MyBooks",
-  USE_STORAGE: false,   // true = allow direct PDF upload (needs Firebase Storage, which requires the pay-as-you-go "Blaze" plan)
-  MAX_MB: 50
-};
-
 const $ = s => document.querySelector(s);
+const fmt = n => CONFIG.CURRENCY + Number(n).toLocaleString("en-IN");
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fmt = n => "₹" + Number(n).toLocaleString("en-IN");
-function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("show"); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove("show"),2800); }
-function view(v){ ["setup","login","app"].forEach(x=>$("#"+x).hidden = x!==v); }
-
-let auth, db, storage, items = [], files = {}, editing = null;
-
-/* ---------- init & auth ---------- */
-function init(){
-  if(!FIREBASE_CONFIG.apiKey || !FIREBASE_CONFIG.projectId) return view("setup");
-  const app = initializeApp(FIREBASE_CONFIG);
-  auth = getAuth(app); db = getFirestore(app);
-  if(CFG.USE_STORAGE){ storage = getStorage(app); $("#uploadBox").hidden = false; }
-  onAuthStateChanged(auth, user=>{ if(user){ view("app"); load(); } else view("login"); });
+const coverBg = c => `linear-gradient(155deg,${esc(c)},color-mix(in srgb,${esc(c)} 62%,#000))`;
+function lsGet(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove("show"),2400); }
+const ICON_BAG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h14l-1.3 9.1a2 2 0 0 1-2 1.7H8.3a2 2 0 0 1-2-1.7L5 9Z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>`;
+const ICON_CHECK = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>`;
+function coverHTML(p){
+  if(p.image && /^data:image\/|^https:\/\//.test(p.image)) return `<div class="cv has-img"><img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy"><span class="pdf">PDF</span></div>`;
+  return `<div class="cv" style="background:${coverBg(p.color)}"><span class="em">${esc(p.emoji)}</span><span class="ct">${esc(p.title)}</span><span class="pdf">PDF</span></div>`;
 }
-$("#loginForm").addEventListener("submit", async e=>{
-  e.preventDefault();
-  const b=$("#lBtn"); b.disabled=true; b.textContent="Logging in…";
-  $("#lErr").hidden = true;
-  try{ await signInWithEmailAndPassword(auth, $("#lEmail").value.trim(), $("#lPass").value); }
-  catch(err){
-    const m = {
-      "auth/invalid-credential":"Email ya password galat hai.",
-      "auth/wrong-password":"Password galat hai.",
-      "auth/user-not-found":"Is email ka user Firebase Authentication mein nahi bana hai.",
-      "auth/invalid-email":"Email sahi format mein likho.",
-      "auth/operation-not-allowed":"Firebase mein Email/Password sign-in ON nahi hai.",
-      "auth/too-many-requests":"Bahut zyada try ho gaye. Thodi der baad try karo.",
-      "auth/network-request-failed":"Internet check karo.",
-      "auth/invalid-api-key":"apiKey galat hai (admin.html ka FIREBASE_CONFIG check karo).",
-      "auth/api-key-not-valid.-please-pass-a-valid-api-key.":"apiKey galat hai (admin.html ka FIREBASE_CONFIG check karo).",
-      "auth/unauthorized-domain":"Ye website Firebase ke Authorized domains mein add nahi hai."
-    }[err.code] || "Login nahi hua.";
-    const e = $("#lErr"); e.textContent = m + "  [" + (err.code || err.message) + "]"; e.hidden = false;
-  }
-  b.disabled=false; b.textContent="Login";
-});
-$("#logoutBtn").onclick = ()=>signOut(auth);
 
-/* ---------- list ---------- */
-async function load(){
+/* =========================================================
+   STATE & DATA
+   ========================================================= */
+let PRODUCTS = [];
+let state = {cat:"All", q:"", sort:"pop", cart:[]};
+
+let REMOTE = CONFIG.FIREBASE_PROJECT_ID ? [] : null;   // null = demo mode with DEFAULT_PRODUCTS
+function buildProducts(){ PRODUCTS = (REMOTE || DEFAULT_PRODUCTS).map(p=>({...p, id:String(p.id)})); }
+const fv = v => v==null ? null : v.stringValue!==undefined ? v.stringValue : v.integerValue!==undefined ? Number(v.integerValue) : v.doubleValue!==undefined ? v.doubleValue : v.booleanValue!==undefined ? v.booleanValue : null;
+async function loadRemote(){
+  if(!CONFIG.FIREBASE_PROJECT_ID) return;
   try{
-    const ps = await getDocs(query(collection(db,"products"), orderBy("createdAt","desc")));
-    items = ps.docs.map(d=>({id:d.id, ...d.data()}));
-    const fs = await getDocs(collection(db,"private_files"));
-    files = {}; fs.forEach(d=>{ files[d.id] = d.data(); });
-    render();
-  }catch(err){
-    $("#list").innerHTML = `<div class="empty">Could not load: ${esc(err.message)}<br><small>Check that your Firestore rules are published and your admin email matches.</small></div>`;
-  }
+    const url = `https://firestore.googleapis.com/v1/projects/${CONFIG.FIREBASE_PROJECT_ID}/databases/(default)/documents:runQuery?key=${CONFIG.FIREBASE_API_KEY}`;
+    const body = {structuredQuery:{from:[{collectionId:"products"}],
+      where:{fieldFilter:{field:{fieldPath:"active"},op:"EQUAL",value:{booleanValue:true}}}}};
+    const r = await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    if(!r.ok) throw new Error("load failed");
+    const rows = await r.json();
+    REMOTE = rows.filter(x=>x.document).map(x=>{
+      const d=x.document, f=d.fields||{}, g=k=>fv(f[k]);
+      return {id:d.name.split("/").pop(), title:g("title")||"Untitled", cat:g("cat")||"General", price:g("price")||0,
+        old:g("oldPrice")||0, pages:g("pages")||0, rating:0, sales:0, emoji:g("emoji")||"📄", color:g("color")||"#4c6ef5",
+        date:String(g("createdAt")||""), desc:g("descr")||"", image:g("image")||"", file:""};
+    }).sort((a,b)=>Number(b.date)-Number(a.date));
+  }catch(e){ toast("Could not load products. Please refresh."); }
 }
-const hasFile = p => !!(files[p.id] && files[p.id].url);
-function render(){
-  $("#stats").innerHTML = `<div class="stat"><b>${items.length}</b>Total PDFs</div><div class="stat"><b>${items.filter(p=>p.active).length}</b>Live on store</div><div class="stat"><b>${items.filter(hasFile).length}</b>With file link</div>`;
-  $("#cats").innerHTML = [...new Set(items.map(p=>p.cat).filter(Boolean))].map(c=>`<option value="${esc(c)}">`).join("");
-  if(!items.length){ $("#list").innerHTML = `<div class="empty">No PDFs yet. Tap “+ Add PDF”.</div>`; return; }
-  $("#list").innerHTML = items.map(p=>{
-    const has = hasFile(p);
-    return `<div class="item">
-      <div class="item-head"><div class="th" style="background:${esc(p.color||"#6c5ce7")}33">${p.image?`<img src="${esc(p.image)}" alt="">`:esc(p.emoji||"📄")}</div>
-        <div class="info"><b>${esc(p.title)}</b><small>${fmt(p.price||0)} · ${esc(p.cat||"General")}</small></div></div>
-      <div class="tags">
-        <span class="tag ${p.active?"ok":"bad"}">${p.active?"Live":"Hidden"}</span>
-        <span class="tag ${has?"ok":"bad"}">${has?"File link added":"No file link"}</span>
-      </div>
-      <div class="acts">
-        ${has?`<button data-act="copy" data-id="${p.id}">🔗 Copy link</button><button class="wa" data-act="wa" data-id="${p.id}">Share on WhatsApp</button>`:""}
-        <button data-act="edit" data-id="${p.id}">Edit</button>
-        <button data-act="toggle" data-id="${p.id}">${p.active?"Hide":"Show"}</button>
-        <button class="del" data-act="del" data-id="${p.id}">Delete</button>
-      </div></div>`;
+function loadCart(){ state.cart = lsGet("pv_cart",[]).filter(id=>PRODUCTS.some(p=>p.id===id)); }
+function saveCart(){ lsSet("pv_cart",state.cart); }
+const byId = id => PRODUCTS.find(p=>p.id===id);
+
+/* =========================================================
+   CATALOG
+   ========================================================= */
+function renderChips(){
+  const cats=["All",...new Set(PRODUCTS.map(p=>p.cat))];
+  if(!cats.includes(state.cat)) state.cat="All";
+  $("#chips").innerHTML=cats.map(c=>`<button class="cat ${c===state.cat?"active":""}" data-cat="${esc(c)}">${c==="All"?"All PDFs":esc(c)}</button>`).join("");
+  $("#shopTitle").textContent = state.cat==="All" ? "All PDFs" : state.cat;
+}
+function renderHero(){
+  const top=[...PRODUCTS].sort((a,b)=>(b.sales||0)-(a.sales||0)||String(b.date).localeCompare(String(a.date))).slice(0,3);
+  $("#heroCards").innerHTML=top.map(p=>`<div class="hc">${coverHTML(p).replace('class="cv"','class="cv"')}<b>${esc(p.title)}</b><span>${fmt(p.price)}</span></div>`).join("");
+}
+function renderGrid(){
+  let list=PRODUCTS.filter(p=>(state.cat==="All"||p.cat===state.cat) && (p.title+" "+p.desc+" "+p.cat).toLowerCase().includes(state.q.toLowerCase()));
+  const s=state.sort;
+  list.sort((a,b)=> s==="low"?a.price-b.price : s==="high"?b.price-a.price : s==="new"?String(b.date).localeCompare(String(a.date)) : (b.sales||0)-(a.sales||0) || String(b.date).localeCompare(String(a.date)));
+  $("#empty").hidden=list.length>0;
+  $("#grid").innerHTML=list.map(p=>{
+    const off=p.old>p.price?Math.round((1-p.price/p.old)*100):0, inCart=state.cart.includes(p.id);
+    return `<article class="product">
+      <div class="pcover" data-view="${p.id}">${off?`<span class="off">${off}% OFF</span>`:""}${coverHTML(p)}</div>
+      <div class="pbody">
+        <div class="pmeta"><span>${esc(p.cat)}</span>${p.rating?`<span class="rate">${p.rating} <b>★</b></span>`:(p.pages?`<span>${p.pages} pages</span>`:"")}</div>
+        <h3 data-view="${p.id}">${esc(p.title)}</h3>
+        <div class="prow">
+          <div><span class="price">${fmt(p.price)}</span>${p.old>p.price?`<span class="old">${fmt(p.old)}</span>`:""}</div>
+          <button class="add ${inCart?"in":""}" data-add="${p.id}" aria-label="${inCart?"In cart":"Add to cart"}">${inCart?ICON_CHECK:ICON_BAG}</button>
+        </div>
+      </div></article>`;
   }).join("");
 }
-const find = id => items.find(p=>p.id===id);
+function refreshAll(){ buildProducts(); loadCart(); renderChips(); renderHero(); renderGrid(); renderCart(); }
 
-$("#list").addEventListener("click", async e=>{
-  const b = e.target.closest("[data-act]"); if(!b) return;
-  const p = find(b.dataset.id); if(!p) return;
-  const act = b.dataset.act;
+/* =========================================================
+   CART
+   ========================================================= */
+const cartItems = () => state.cart.map(byId).filter(Boolean);
+const cartTotal = () => cartItems().reduce((t,p)=>t+p.price,0);
+function renderCart(){
+  $("#cartCount").textContent=state.cart.length;
+  $("#cartCount").hidden = !state.cart.length;
+  const body=$("#cartBody"), foot=$("#cartFoot");
+  if(!state.cart.length){ body.innerHTML=`<div class="empty">Your cart is empty</div>`; foot.innerHTML=""; foot.hidden=true; return; }
+  foot.hidden=false;
+  body.innerHTML=cartItems().map(p=>`<div class="ci"><div class="th" style="background:${coverBg(p.color)}">${p.image&&/^data:image\/|^https:\/\//.test(p.image)?`<img src="${esc(p.image)}" alt="">`:esc(p.emoji)}</div>
+      <div class="info"><b>${esc(p.title)}</b><small>${fmt(p.price)}</small></div>
+      <button class="rm" data-rm="${p.id}">Remove</button></div>`).join("");
+  foot.innerHTML=`<div class="total-row"><span>Total</span><b>${fmt(cartTotal())}</b></div>
+    <button class="btn btn-primary btn-block" id="checkoutBtn">Checkout</button>`;
+}
+function addToCart(id){ if(state.cart.includes(id)){ openCart(); return; } state.cart.push(id); saveCart(); renderCart(); renderGrid(); toast("Added to cart"); }
+function removeFromCart(id){ state.cart=state.cart.filter(x=>x!==id); saveCart(); renderCart(); renderGrid(); }
+function openCart(){ $("#drawer").classList.add("show"); $("#overlay").classList.add("show"); }
+function closeCart(){ $("#drawer").classList.remove("show"); $("#overlay").classList.remove("show"); }
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+function openModal(html){ $("#modalBox").innerHTML=html; $("#modal").classList.add("show"); }
+function closeModal(){ $("#modal").classList.remove("show"); }
+
+function showDetails(id){
+  const p=byId(id); if(!p) return;
+  const off=p.old>p.price?Math.round((1-p.price/p.old)*100):0;
+  openModal(`<div class="mh"><h2>${esc(p.title)}</h2><button class="x" data-close aria-label="Close">✕</button></div>
+    <div class="detail">${coverHTML(p)}
+      <div>
+        <p class="sub" style="margin-bottom:12px">${esc(p.desc)}</p>
+        <div class="sum" style="margin:0"><div><span>Category</span><b>${esc(p.cat)}</b></div>${p.pages?`<div><span>Pages</span><b>${p.pages}</b></div>`:""}
+        <div><span>Format</span><b>PDF</b></div>
+        <div><span>Price</span><b>${fmt(p.price)}${p.old>p.price?` <s style="color:var(--muted);font-weight:500">${fmt(p.old)}</s>`:""}</b></div></div>
+        ${off?`<p class="note" style="text-align:left;color:var(--danger);font-weight:700">You save ${off}%</p>`:""}
+      </div></div>
+    <button class="btn btn-primary btn-block" data-add-close="${p.id}">Add to cart</button>`);
+}
+
+/* =========================================================
+   CHECKOUT  (details form → WhatsApp)
+   ========================================================= */
+function orderId(){ return "MB"+Date.now().toString(36).toUpperCase().slice(-6); }
+
+function showCheckout(){
+  const saved=lsGet("pv_cust",{});
+  const oid=orderId();
+  const rows=cartItems().map((p,i)=>`<div><span>${i+1}. ${esc(p.title)}</span><b>${fmt(p.price)}</b></div>`).join("");
+  openModal(`<div class="mh"><h2>Checkout</h2><button class="x" data-close aria-label="Close">✕</button></div>
+    <p class="sub">Fill in your details. Your order is sent to us on WhatsApp automatically.</p>
+    <div class="sum"><span class="hd">Order ${oid}</span>${rows}
+      <div style="border-top:1px solid var(--line);margin-top:6px;padding-top:8px"><span>Total</span><b>${fmt(cartTotal())}</b></div></div>
+    <form id="coForm" novalidate>
+      <label>Full name *</label><input class="f" id="cName" autocomplete="name" value="${esc(saved.name)}">
+      <div class="row2">
+        <div><label>WhatsApp / Phone *</label><input class="f" id="cPhone" type="tel" autocomplete="tel" placeholder="10-digit number" value="${esc(saved.phone)}"></div>
+        <div><label>Email</label><input class="f" id="cEmail" type="email" autocomplete="email" value="${esc(saved.email)}"></div>
+      </div>
+      <label>Address *</label><textarea class="f" id="cAddr" autocomplete="street-address" placeholder="House no, street, area">${esc(saved.addr)}</textarea>
+      <div class="row2">
+        <div><label>City *</label><input class="f" id="cCity" autocomplete="address-level2" value="${esc(saved.city)}"></div>
+        <div><label>Pincode *</label><input class="f" id="cPin" inputmode="numeric" maxlength="6" autocomplete="postal-code" value="${esc(saved.pin)}"></div>
+      </div>
+      <label>Note (optional)</label><input class="f" id="cNote" placeholder="Anything we should know?">
+      <div class="btn-stack" style="margin-top:18px">
+        <button class="btn btn-wa btn-block" type="submit">Order on WhatsApp</button>
+        ${CONFIG.RAZORPAY_KEY?`<button class="btn btn-primary btn-block" type="button" id="payOnline">Pay ${fmt(cartTotal())} online</button>`:""}
+      </div>
+      <p class="note">Your details are saved on this device so you don't have to type them again.</p>
+    </form>`);
+  $("#coForm").dataset.oid=oid;
+  $("#coForm").addEventListener("submit",e=>{ e.preventDefault(); const c=readForm(); if(c) sendWhatsApp(c,$("#coForm").dataset.oid); });
+  const po=$("#payOnline"); if(po) po.onclick=()=>{ const c=readForm(); if(c) payOnline(c,$("#coForm").dataset.oid); };
+}
+function readForm(){
+  const c={name:$("#cName").value.trim(), phone:$("#cPhone").value.trim(), email:$("#cEmail").value.trim(),
+           addr:$("#cAddr").value.trim(), city:$("#cCity").value.trim(), pin:$("#cPin").value.trim(), note:$("#cNote").value.trim()};
+  if(c.name.length<2){ toast("Enter your name"); return null; }
+  if(c.phone.replace(/\D/g,"").length<10){ toast("Enter a valid phone number"); return null; }
+  if(c.email && !/^\S+@\S+\.\S+$/.test(c.email)){ toast("Enter a valid email"); return null; }
+  if(c.addr.length<5){ toast("Enter your address"); return null; }
+  if(!c.city){ toast("Enter your city"); return null; }
+  if(!/^\d{6}$/.test(c.pin)){ toast("Enter a 6-digit pincode"); return null; }
+  lsSet("pv_cust",{name:c.name,phone:c.phone,email:c.email,addr:c.addr,city:c.city,pin:c.pin});
+  return c;
+}
+function buildMessage(c,oid,items,total,paidNote){
+  const lines=items.map((p,i)=>`${i+1}. ${p.title} – ${fmt(p.price)}`).join("\n");
+  return `*New Order – ${CONFIG.STORE_NAME}*\n`+
+    `Order ID: ${oid}\n\n`+
+    `*Items*\n${lines}\n\n`+
+    `*Total: ${fmt(total)}*\n\n`+
+    `*Customer details*\n`+
+    `Name: ${c.name}\n`+
+    `Phone: ${c.phone}\n`+
+    (c.email?`Email: ${c.email}\n`:"")+
+    `Address: ${c.addr}, ${c.city} - ${c.pin}\n`+
+    (c.note?`Note: ${c.note}\n`:"")+
+    `\n${paidNote||"Please share the payment details so I can complete my order."}`;
+}
+function saveOrder(oid,items,total,c,mode,payId){
+  const orders=lsGet("pv_orders",[]);
+  orders.push({oid,mode,payId:payId||null,total,ids:items.map(i=>i.id),name:c.name,phone:c.phone,date:new Date().toISOString()});
+  lsSet("pv_orders",orders);
+}
+function sendWhatsApp(c,oid){
+  const items=cartItems(), total=cartTotal();
+  const url=`https://wa.me/${CONFIG.SELLER_WHATSAPP}?text=${encodeURIComponent(buildMessage(c,oid,items,total))}`;
+  saveOrder(oid,items,total,c,"whatsapp");
+  state.cart=[]; saveCart(); renderCart(); renderGrid(); closeCart();
+  const w=window.open(url,"_blank");
+  openModal(`<div class="ok-ic">💬</div><h2 style="text-align:center">Order ready!</h2>
+    <p class="sub" style="text-align:center">Order <b>${esc(oid)}</b> · ${fmt(total)}<br>Tap the button to send your order on WhatsApp. We'll reply with payment details and your PDF.</p>
+    <a class="btn btn-wa btn-block" href="${esc(url)}" target="_blank" rel="noopener">Open WhatsApp</a>
+    <button class="btn btn-ghost btn-block" style="margin-top:10px" data-close>Close</button>
+    ${w?"":`<p class="note">If WhatsApp did not open, tap the button above.</p>`}`);
+}
+
+/* optional online payment */
+function loadRazorpay(){ return new Promise((res,rej)=>{ if(window.Razorpay) return res(); const s=document.createElement("script"); s.src="https://checkout.razorpay.com/v1/checkout.js"; s.onload=res; s.onerror=()=>rej(new Error("Could not load payment gateway")); document.head.appendChild(s); }); }
+async function payOnline(c,oid){
+  const items=cartItems(), total=cartTotal();
   try{
-    if(act==="edit") return openForm(p);
-    if(act==="copy"){ const u=files[p.id].url;
-      try{ await navigator.clipboard.writeText(u); toast("Link copied"); }catch(_){ prompt("Copy this link:",u); } return; }
-    if(act==="wa"){
-      const msg=`Thank you for your order from ${CFG.STORE_NAME}! 🎉\n\n*${p.title}*\nDownload your PDF:\n${files[p.id].url}`;
-      window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank"); return; }
-    if(act==="toggle"){ await updateDoc(doc(db,"products",p.id),{active:!p.active}); toast(p.active?"Hidden from store":"Now live"); return load(); }
-    if(act==="del"){
-      if(!confirm(`Delete “${p.title}”? This also removes its file link.`)) return;
-      const f = files[p.id];
-      if(f && f.storagePath && storage){ try{ await deleteObject(ref(storage,f.storagePath)); }catch(_){} }
-      await deleteDoc(doc(db,"private_files",p.id)).catch(()=>{});
-      await deleteDoc(doc(db,"products",p.id));
-      toast("Deleted"); load();
-    }
+    await loadRazorpay();
+    const rzp=new Razorpay({
+      key:CONFIG.RAZORPAY_KEY, amount:total*100, currency:"INR", name:CONFIG.STORE_NAME,
+      description:"Order "+oid, prefill:{name:c.name,email:c.email,contact:c.phone}, theme:{color:"#3b5bdb"},
+      handler:r=>paidSuccess(c,oid,items,total,r.razorpay_payment_id)
+    });
+    rzp.on("payment.failed",r=>toast("Payment failed: "+(r.error&&r.error.description||"try again")));
+    rzp.open();
   }catch(err){ toast(err.message); }
-});
-
-/* ---------- add / edit form ---------- */
-function openForm(p){
-  editing = p || null;
-  $("#mTitle").textContent = p ? "Edit PDF" : "Add PDF";
-  $("#pTitle").value = p ? p.title : "";
-  $("#pCat").value = p ? (p.cat||"") : "";
-  $("#pPages").value = p && p.pages ? p.pages : "";
-  $("#pPrice").value = p ? p.price : "";
-  $("#pOld").value = p && p.oldPrice ? p.oldPrice : "";
-  $("#pEmoji").value = p ? (p.emoji||"📄") : "📄";
-  $("#pColor").value = p ? (p.color||"#6c5ce7") : "#6c5ce7";
-  $("#pDesc").value = p ? (p.descr||"") : "";
-  $("#pActive").checked = p ? !!p.active : true;
-  $("#pLink").value = p && files[p.id] ? (files[p.id].url||"") : "";
-  if($("#pFile")) $("#pFile").value = "";
-  $("#pImage").value = "";
-  newImage = null; removeImage = false;
-  showPreview(p && p.image ? p.image : "", p && p.image ? "Current poster" : "");
-  $("#modal").hidden = false;
+}
+function paidSuccess(c,oid,items,total,payId){
+  saveOrder(oid,items,total,c,"razorpay",payId);
+  state.cart=[]; saveCart(); renderCart(); renderGrid(); closeCart();
+  const url=`https://wa.me/${CONFIG.SELLER_WHATSAPP}?text=${encodeURIComponent(buildMessage(c,oid,items,total,"✅ Paid online. Payment ID: "+payId))}`;
+  openModal(`<div class="ok-ic">✅</div><h2 style="text-align:center">Payment successful!</h2>
+    <p class="sub" style="text-align:center">Order <b>${esc(oid)}</b> · Payment ID: <b>${esc(payId)}</b></p>
+    ${items.map(p=>downloadRow(p)).join("")}
+    <a class="btn btn-wa btn-block" style="margin-top:14px" href="${esc(url)}" target="_blank" rel="noopener">Confirm on WhatsApp</a>
+    <button class="btn btn-ghost btn-block" style="margin-top:10px" data-close>Close</button>`);
+}
+function downloadRow(p){
+  if(p.file) return `<div class="dl"><span>${esc(p.emoji)} ${esc(p.title)}</span><a href="${esc(p.file)}" target="_blank" rel="noopener">Download</a></div>`;
+  return `<div class="dl"><span>${esc(p.emoji)} ${esc(p.title)}</span><small>Sent on WhatsApp</small></div>`;
 }
 
-/* ---------- poster image (max 1 MB, resized & stored in Firestore) ---------- */
-const MAX_IMG_BYTES = 1024 * 1024;   // 1 MB
-let newImage = null, removeImage = false;
-function showPreview(src, info){
-  $("#imgPrev").hidden = !src;
-  if(src){ $("#imgPrevImg").src = src; $("#imgInfo").textContent = info || ""; }
-}
-function compressImage(file, maxW = 900, maxH = 1200){
-  return new Promise((resolve, reject)=>{
-    const url = URL.createObjectURL(file), img = new Image();
-    img.onload = ()=>{
-      URL.revokeObjectURL(url);
-      const k = Math.min(1, maxW/img.width, maxH/img.height);
-      const c = document.createElement("canvas");
-      c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
-      const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0,0,c.width,c.height); g.drawImage(img,0,0,c.width,c.height);
-      let q = 0.85, out = c.toDataURL("image/jpeg", q);
-      while(out.length > 600000 && q > 0.4){ q -= 0.1; out = c.toDataURL("image/jpeg", q); }
-      out.length > 800000 ? reject(new Error("Image is too detailed. Try a smaller image.")) : resolve(out);
-    };
-    img.onerror = ()=>{ URL.revokeObjectURL(url); reject(new Error("Could not read this image")); };
-    img.src = url;
-  });
-}
-$("#pImage").addEventListener("change", async e=>{
-  const f = e.target.files[0]; if(!f) return;
-  if(!/^image\/(jpeg|png|webp)$/.test(f.type)){ e.target.value=""; return toast("Please choose a JPG, PNG or WebP image"); }
-  if(f.size > MAX_IMG_BYTES){ e.target.value=""; return toast("Image is " + (f.size/1048576).toFixed(1) + " MB. Maximum allowed is 1 MB."); }
-  try{
-    newImage = await compressImage(f); removeImage = false;
-    showPreview(newImage, "New poster · " + Math.round(newImage.length*0.75/1024) + " KB");
-  }catch(err){ e.target.value=""; newImage = null; toast(err.message); }
+/* =========================================================
+   EVENTS
+   ========================================================= */
+document.addEventListener("click",e=>{
+  const t=e.target;
+  if(t.closest("[data-close]")) return closeModal();
+  const add=t.closest("[data-add]"); if(add) return addToCart(add.dataset.add);
+  const addc=t.closest("[data-add-close]"); if(addc){ addToCart(addc.dataset.addClose); closeModal(); return; }
+  const view=t.closest("[data-view]"); if(view) return showDetails(view.dataset.view);
+  const rm=t.closest("[data-rm]"); if(rm) return removeFromCart(rm.dataset.rm);
+  const chip=t.closest("[data-cat]"); if(chip){ state.cat=chip.dataset.cat; renderChips(); renderGrid(); document.getElementById("shop").scrollIntoView({behavior:"smooth"}); return; }
+  if(t.closest("#checkoutBtn")){ closeCart(); showCheckout(); }
 });
-$("#imgRemove").onclick = ()=>{ newImage = null; removeImage = true; $("#pImage").value = ""; showPreview("",""); };
-function closeForm(){ $("#modal").hidden = true; editing = null; }
-$("#addBtn").onclick = ()=>openForm(null);
-$("#cancelBtn").onclick = closeForm;
-$("#modal").addEventListener("mousedown", e=>{ if(e.target.id==="modal") closeForm(); });
+$("#openCart").onclick=openCart; $("#closeCart").onclick=closeCart; $("#overlay").onclick=closeCart;
+$("#modal").addEventListener("click",e=>{ if(e.target.id==="modal") closeModal(); });
+$("#search").addEventListener("input",e=>{ state.q=e.target.value; renderGrid(); });
+$("#sort").addEventListener("change",e=>{ state.sort=e.target.value; renderGrid(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ closeModal(); closeCart(); } });
+const waHi = `https://wa.me/${CONFIG.SELLER_WHATSAPP}?text=${encodeURIComponent("Hi, I have a question about your PDFs.")}`;
+for(const sel of ["#contactLink","#waTop"]){ const a=$(sel); a.href=waHi; a.target="_blank"; a.rel="noopener"; }
+$("#year").textContent=new Date().getFullYear();
 
-$("#pForm").addEventListener("submit", async e=>{
-  e.preventDefault();
-  const price = Number($("#pPrice").value);
-  if($("#pPrice").value==="" || !(price>=0)) return toast("Enter a price");
-  const link = $("#pLink").value.trim();
-  if(link && !/^https?:\/\//i.test(link)) return toast("Link must start with https://");
-  const file = CFG.USE_STORAGE ? $("#pFile").files[0] : null;
-  if(file){
-    if(file.type!=="application/pdf" && !/\.pdf$/i.test(file.name)) return toast("Please choose a PDF file");
-    if(file.size > CFG.MAX_MB*1048576) return toast(`File is larger than ${CFG.MAX_MB} MB`);
-  }
-  const payload = {
-    title:$("#pTitle").value.trim(), cat:$("#pCat").value.trim()||"General",
-    price, oldPrice:Number($("#pOld").value)||0, pages:Number($("#pPages").value)||0,
-    emoji:$("#pEmoji").value.trim()||"📄", color:$("#pColor").value,
-    descr:$("#pDesc").value.trim(), active:$("#pActive").checked
-  };
-  if(newImage) payload.image = newImage;
-  else if(removeImage) payload.image = "";
-  const btn=$("#saveBtn"); btn.disabled=true; btn.textContent = file ? "Uploading…" : "Saving…";
-  try{
-    let id = editing && editing.id;
-    if(id) await updateDoc(doc(db,"products",id), payload);
-    else { const r = await addDoc(collection(db,"products"), {...payload, createdAt:Date.now()}); id = r.id; }
-
-    const old = files[id] || {};
-    let url = link, storagePath = old.storagePath || null;
-    if(file){
-      const path = `pdfs/${id}/${Date.now()}-${file.name.replace(/[^\w.\-]+/g,"_")}`;
-      const task = uploadBytesResumable(ref(storage,path), file, {contentType:"application/pdf"});
-      await new Promise((res,rej)=>task.on("state_changed",
-        s=>{ btn.textContent = "Uploading " + Math.round(s.bytesTransferred/s.totalBytes*100) + "%"; }, rej, res));
-      url = await getDownloadURL(task.snapshot.ref);
-      if(old.storagePath){ try{ await deleteObject(ref(storage,old.storagePath)); }catch(_){} }
-      storagePath = path;
-    } else if(link !== (old.url||"")) {
-      storagePath = null;   // link was replaced or cleared
-    }
-    if(url) await setDoc(doc(db,"private_files",id), {url, storagePath});
-    else if(old.url) await deleteDoc(doc(db,"private_files",id));
-    toast("Saved ✓"); closeForm(); load();
-  }catch(err){ toast(err.message || "Something went wrong"); }
-  btn.disabled=false; btn.textContent="Save";
-});
-
-document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#modal").hidden) closeForm(); });
-init();
+refreshAll();
+loadRemote().then(refreshAll);
 </script>
 </body>
 </html>
